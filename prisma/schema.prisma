@@ -6,7 +6,6 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
-
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -15,6 +14,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+ 
+  orders    Order[]
   trucks    Truck[]
 }
 
@@ -27,7 +28,9 @@ model Truck {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User @relation(fields: [userId], references: [id])
+  user      User  @relation(fields: [userId], references: [id])
+  // Relación inversa con Order
+  orders    Order[]
 }
 
 model Location {
@@ -38,4 +41,27 @@ model Location {
   longitude Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Relación inversa con Order
+  pickupOrders  Order[] @relation("PickupLocation")
+  dropoffOrders Order[] @relation("DropoffLocation")
 }
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  truckId   Int
+  pickupId  Int
+  dropoffId Int
+  status    String   @default("created") 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+ 
+  user      User     @relation(fields: [userId], references: [id])
+  truck     Truck    @relation(fields: [truckId], references: [id])
+  pickup    Location @relation(fields: [pickupId], references: [id], name: "PickupLocation")
+  dropoff   Location @relation(fields: [dropoffId], references: [id], name: "DropoffLocation")
+}
+
+

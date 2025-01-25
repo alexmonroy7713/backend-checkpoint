@@ -1,0 +1,15 @@
+-- CreateTable
+CREATE TABLE "Order" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "userId" INTEGER NOT NULL,
+    "truckId" INTEGER NOT NULL,
+    "pickupId" INTEGER NOT NULL,
+    "dropoffId" INTEGER NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'created',
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Order_truckId_fkey" FOREIGN KEY ("truckId") REFERENCES "Truck" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Order_pickupId_fkey" FOREIGN KEY ("pickupId") REFERENCES "Location" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Order_dropoffId_fkey" FOREIGN KEY ("dropoffId") REFERENCES "Location" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
