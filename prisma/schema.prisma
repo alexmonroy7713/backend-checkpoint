@@ -29,3 +29,13 @@ model Truck {
 
   user      User @relation(fields: [userId], references: [id])
 }
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  placeId   String   @unique
+  address   String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
